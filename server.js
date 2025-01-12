@@ -73,7 +73,15 @@ app.post('/verify-payment', async (req, res) => {
 
 // Payment success route (Make sure it's deployed on Vercel)
 app.get('/payment-success', (req, res) => {
-    res.send('Payment was successful!');
+    // Get query parameters from the URL (this will include clientTxnId and txnDate if successful)
+    const { clientTxnId, txnDate } = req.query;
+
+    if (clientTxnId && txnDate) {
+        // You can save or log the payment status and notify the user
+        res.send('Payment was successful!');
+    } else {
+        res.status(400).send('Payment verification failed.');
+    }
 });
 
 const PORT = process.env.PORT || 5000;
