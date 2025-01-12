@@ -26,7 +26,8 @@ app.post('/create-order', async (req, res) => {
         customer_name: customerName,
         customer_email: customerEmail,
         customer_mobile: customerMobile,
-        redirect_url: "http://localhost:3000/payment-success",
+        // Use the Vercel URL for the redirect
+        redirect_url: "https://instagram-payment-backend.vercel.app/payment-success",
         udf1: username
     };
 
@@ -70,5 +71,10 @@ app.post('/verify-payment', async (req, res) => {
     }
 });
 
-const PORT = 5000;
+// Payment success route (Make sure it's deployed on Vercel)
+app.get('/payment-success', (req, res) => {
+    res.send('Payment was successful!');
+});
+
+const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`));
