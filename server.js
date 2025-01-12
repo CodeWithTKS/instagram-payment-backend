@@ -7,7 +7,7 @@ const app = express();
 app.use(cors());
 app.use(bodyParser.json());
 
-const API_KEY = "185e94ea-36ec-461e-9ff3-282e5b52fd3b"; // Replace with your API key
+const API_KEY = "f4d234bc-995b-4aa6-8f55-594479e144fd"; // Replace with your API key
 
 // Endpoint to create an order
 app.post('/create-order', async (req, res) => {
