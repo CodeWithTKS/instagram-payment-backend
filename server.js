@@ -21,7 +21,7 @@ app.post('/create-order', async (req, res) => {
     const payload = {
         key: API_KEY,
         client_txn_id: clientTxnId,
-        amount: "100",
+        amount: "1",
         p_info: "Instagram Username Verification",
         customer_name: customerName,
         customer_email: customerEmail,
