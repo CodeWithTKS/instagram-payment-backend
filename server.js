@@ -60,20 +60,34 @@ app.post('/verify-payment', async (req, res) => {
 
     try {
         const response = await axios.post('https://api.ekqr.in/api/check_order_status', payload);
+        
         if (response.data.status) {
-            res.json({ status: true, data: response.data.data });
+            // After verifying payment, call the payment-success route
+            const successResponse = await axios.get('https://instagram-payment-backend.vercel.app/payment-success', {
+                params: {
+                    clientTxnId: clientTxnId,
+                    txnDate: txnDate
+                }
+            });
+
+            // Send the response from the payment-success route
+            res.json({
+                status: true,
+                message: 'Payment verified and success route called.',
+                data: response.data.data,
+                successResponse: successResponse.data
+            });
         } else {
             res.status(400).json({ status: false, msg: response.data.msg });
         }
     } catch (error) {
         console.error(error);
-        res.status(500).json({ status: false, msg: 'Failed to verify payment.' });
+        res.status(500).json({ status: false, msg: 'Failed to verify payment or call success route.' });
     }
 });
 
 // Payment success route (Make sure it's deployed on Vercel)
 app.get('/payment-success', (req, res) => {
-    // Get query parameters from the URL (this will include clientTxnId and txnDate if successful)
     const { clientTxnId, txnDate } = req.query;
 
     if (clientTxnId && txnDate) {
